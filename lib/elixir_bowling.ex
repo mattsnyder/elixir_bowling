@@ -15,15 +15,27 @@ defmodule ElixirBowling do
 	def score([]), do: 0
 	def score([roll]), do: 0
   def score(rolls) do 
-	  convert_to_frames(rolls)
-		|> Enum.map(&sum(&1))
+		pad_rolls(rolls)
+	  |> convert_to_frames
+		|> Enum.map(&score_frame(&1))
 		|> sum
 	end
+
+	def score_frame([roll, nil | _ ]), do: 0
+	def score_frame([nil | _]), do: 0
+	def score_frame([roll1, roll2, roll3, roll4]) when roll1 + roll2 > 9, do: roll1 + roll2 + roll3
+	def score_frame([roll1, roll2, roll3, roll4]), do: roll1 + roll2 
+
+
+	def pad_rolls(rolls) when length(rolls) < 22, do: pad_rolls(rolls ++ [nil])
+	def pad_rolls(rolls), do: rolls
 
 	def sum([ total ]), do: total
 	def sum([ total | [ head | tail ]]), do: sum([ total + head ] ++ tail)
 
 	def convert_to_frames(rolls) do
-		Enum.chunk(rolls, 2)
+		frame = Enum.chunk(rolls, 4, 2)
+		IO.inspect frame
+		frame
 	end
 end
