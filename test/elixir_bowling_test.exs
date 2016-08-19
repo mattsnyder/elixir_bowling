@@ -26,6 +26,16 @@ defmodule ElixirBowlingTest do
 		assert ElixirBowling.score([5,5,3]) == 13
 	end
 
+	test "a spare without the next roll" do
+		assert ElixirBowling.score([1,6,3,7]) == 7
+	end
 
+	test "a scoreable strike" do
+		assert ElixirBowling.score([10,3,4]) == 24
+	end
+
+	test "an unscoreable strike" do
+		assert ElixirBowling.score([3,6,10,2]) == 9
+	end
 
 end
